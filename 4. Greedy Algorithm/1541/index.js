@@ -7,38 +7,36 @@
 
 [입력]
 첫째 줄에 식이 주어진다. 식은 ‘0’~‘9’, ‘+’, 그리고 ‘-’만으로 이루어져 있고, 가장 처음과 마지막 문자는 숫자이다.
-그리고 연속해서 두 개 이상의 연산자가 나타나지 않고, 5자리보다 많이 연속되는 숫자는 없다. 수는 0으로 시작할 수 있다. 입력으로 주어지는 식의 길이는 50보다 작거나 같다.
+그리고 연속해서 두 개 이상의 연산자가 나타나지 않고, 5자리보다 많이 연속되는 숫자는 없다. 수는 0으로 시작할 수 있다.
+입력으로 주어지는 식의 길이는 50보다 작거나 같다.
 
 [출력]
 첫째 줄에 각 사람이 돈을 인출하는데 필요한 시간의 합의 최솟값을 출력한다.
  */
 // 'dev/stdin'
-let input = require('fs').readFileSync('./input.txt').toString().split('\n');
-console.log(input[0].split(''))
-
-const NUM_REGEX = /^\d+$/
-const arr = [];
-const operatorArr = [];
-let combined = '';
-input[0].split('').forEach((letter, idx) => {
-    if (idx !== input[0].split('').length - 1) {
-        if (NUM_REGEX.test(letter)) {
-            combined += letter;
-        } else {
-            arr.push(Number(combined));
-            arr.push(letter);
-            operatorArr.push(letter);
-            combined = '';
-        }
-    } else {
-        combined += letter;
-        arr.push(Number(combined));
-    }
-})
-
-let result = 0;
-if (operatorArr.every(v => v === operatorArr[0])) {
-    console.log(parseInt(arr.join('')));
+// 풀이 1 : eval 함수 사용
+let input = require('fs').readFileSync('./input.txt').toString().trim();
+if (!(input.includes('+') && input.includes('-'))) {
+    console.log(eval(input));
 } else {
-    console.log('here')
+    const combinedArr = input.split('-')
+        .map((item) => `(${item.split('+').map((i) => Number(i)).join('+')})`).join('-');
+    console.log(eval(combinedArr));
+}
+
+// 풀이 2 : reduce 함수 사용
+if (!(input.includes('+') && input.includes('-'))) {
+    if (input.includes('+')) {
+        console.log(input.split('+').reduce(((a,b) => Number(a) + Number(b))))
+    } else {
+        console.log(input.split('-').reduce(((a,b) => Number(a) - Number(b))))
+    }
+} else {
+    const plusArr = input.split('-')
+        .map((item) => item.split('+'));
+    const minusArr = []
+    plusArr.map((item) => {
+        minusArr.push(item.reduce((a, b) => Number(a) + Number(b)))
+    })
+    console.log(minusArr.reduce((a,b) => a-b))
 }
