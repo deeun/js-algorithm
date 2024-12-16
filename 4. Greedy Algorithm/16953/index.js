@@ -24,7 +24,11 @@ while (Number(b) > a) {
     if (Number(b) % 2 === 0) {
         b = Number(b)/2
     } else {
-        b = String(b).slice(0, String(b).length-1)
+        if (String(b)[String(b).length-1] === '1') {
+            b = String(b).slice(0, String(b).length-1)
+        } else {
+            break;
+        }
     }
 }
 if (Number(b) === a) {
