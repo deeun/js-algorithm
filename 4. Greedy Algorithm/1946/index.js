@@ -18,4 +18,25 @@
 각 테스트 케이스에 대해서 진영 주식회사가 선발할 수 있는 신입사원의 최대 인원수를 한 줄에 하나씩 출력한다.
  */
 // 'dev/stdin'
-let input = require('fs').readFileSync('./input.txt').toString().trim();
+let input = require('fs').readFileSync('./input.txt').toString().split('\n');
+let n = 0;
+const countArr = [];
+const applicantsArr = [];
+for (let i = 1; i < input.length-1; i++) {
+    if (input[i].split(' ').length === 1) {
+        n = Number(input[i]);
+        countArr.push(n);
+        applicantsArr.push([])
+    } else {
+        applicantsArr[applicantsArr.length - 1].push(input[i].split(' '))
+        // if (applicantsArr.length === 1) {
+        //     applicantsArr[applicantsArr.length - 1][i-applicantsArr.length - 1] = input[i].split(' ')
+        // } else {
+        //     applicantsArr[applicantsArr.length - 1][i-n-1] = input[i].split(' ')
+        // }
+    }
+}
+console.log(applicantsArr)
+// applicantsArr.forEach((item, idx) => {
+//     console.log(idx, item)
+// })
