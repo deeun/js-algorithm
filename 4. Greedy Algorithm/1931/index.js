@@ -17,21 +17,29 @@
 // 'dev/stdin'
 let input = require('fs').readFileSync('./input.txt').toString().split('\n');
 
-const roomArr = [];
-const roomIdx = [];
-input.forEach((meet, idx) => {
-    if (idx > 0) {
-        if (roomArr.find((room) => room[1] < Number(meet.split(' ')[0]))) {
-            const index = roomArr.findIndex((room) => Number(room[1]) <= Number(meet.split(' ')[0]) || Number(room[0]) >= Number(meet.split(' ')[1]));
-            roomArr[index] = meet.split(' ');
-            roomIdx.push(index)
-        } else {
-            roomArr.push(meet.split(' '));
-        }
-    }
-})
-const counts = {};
-roomIdx.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-let max = Math.max(...Object.values(counts));
-console.log(max++)
+/*
+모든 회의를 다 넣어주는 것이 아니라
+한 회의실에 배정 가능한 최대 회의 수를 찾는 것임에 집중
+=> 종료 시간이 이른 회의부터 확인해서 겹치지않게 배정
+*/
 
+// 총 회의 수
+const n = Number(input[0]);
+
+// const meetings = input.map((m) => m.split(' ')).sort((a, b) => input[a] - input[b]).slice(1,);
+const meetings = input.map((m) => m.split(' ')).slice(1,);
+meetings.sort(function(a,b) {
+    if(a[1] != b[1]) return a[1] - b[1];
+    else return a[0]-b[0];
+})
+console.log(meetings)
+let cnt = 1;
+let cur = 0;
+for (i = 1; i < n; i++) {
+   if (Number(meetings[cur][1]) <= Number(meetings[i][0])) {
+    cur = i;
+    cnt += 1;
+   }
+}
+
+console.log(cnt);
